@@ -1,4 +1,7 @@
 package ORM
 
-type request struct {
+import "encoding/json"
+
+type Request struct {
+	MessageType String `json:"message_type"`
 }
