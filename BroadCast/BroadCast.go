@@ -18,7 +18,7 @@ func BroadCast(userName string, info []byte) {
 
 func EventBroadcast() {
 	if !Utils.MessageQueue.IsEmpty() {
-		for event := Utils.MessageQueue.Dequeue(); event != nil; {
+		for event := Utils.MessageQueue.Dequeue(); event != nil; event = Utils.MessageQueue.Dequeue() {
 			eventUuid := uuid.Must(uuid.NewV4()).String()
 			msgType := event.Type
 			retJson := ORM.EventResponse{

@@ -15,10 +15,10 @@ func ErrHandle(e interface{}) {
 	}
 }
 
-func MessageListen() {
-	for {
-		if !MessageQueue.IsEmpty() {
-			MessageBox <- 1
-		}
-	}
-}
+//func MessageListen(){
+//	for{
+//		if !MessageQueue.IsEmpty(){
+//			MessageBox <- 1
+//		}
+//	}
+//}

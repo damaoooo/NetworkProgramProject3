@@ -7,6 +7,7 @@ type MessageBlock struct {
 	Plain       string   `json:"plain"`
 	SendTo      string   `json:"send_to"`
 	FileInfo    FileInfo `json:"file_info"`
+	Event       Event    `json:"event"`
 }
 
 type FileInfo struct {

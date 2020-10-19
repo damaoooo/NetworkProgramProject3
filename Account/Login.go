@@ -13,15 +13,15 @@ func Login(connection net.Conn, request ORM.MessageBlock) {
 	retJson := ORM.CommonResponse{Uuid: uuid}
 	if _, ok := Utils.ConnectionMap[username]; ok {
 		retJson.Result = "multi-username"
+	} else {
+		retJson.Result = "Success"
+		Utils.ConnectionMap[username] = connection
 		event := ORM.Event{
 			Type: "online",
 			User: username,
 			Case: "online",
 		}
 		Utils.MessageQueue.Add(event)
-	} else {
-		retJson.Result = "Success"
-		Utils.ConnectionMap[username] = connection
 	}
 	ret, err := json.Marshal(retJson)
 	Utils.ErrHandle(err)
