@@ -24,9 +24,9 @@ func Login(connection net.Conn, request ORM.MessageBlock) {
 		Utils.ConnectionMap[username] = connection
 	}
 	ret, err := json.Marshal(retJson)
-	Utils.Errhandle(err)
+	Utils.ErrHandle(err)
 	_, err = connection.Write(ret)
-	Utils.Errhandle(err)
+	Utils.ErrHandle(err)
 }
 
 func Logout(connection net.Conn, request ORM.MessageBlock) {
@@ -48,7 +48,7 @@ func Logout(connection net.Conn, request ORM.MessageBlock) {
 	}
 
 	ret, err := json.Marshal(retJson)
-	Utils.Errhandle(err)
+	Utils.ErrHandle(err)
 	_, err = connection.Write(ret)
-	Utils.Errhandle(err)
+	Utils.ErrHandle(err)
 }

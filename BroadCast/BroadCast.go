@@ -11,7 +11,7 @@ func BroadCast(userName string, info []byte) {
 	for username, conn := range Utils.ConnectionMap {
 		if username != userName {
 			_, err := conn.Write(info)
-			Utils.Errhandle(err)
+			Utils.ErrHandle(err)
 		}
 	}
 }
@@ -32,7 +32,7 @@ func EventBroadcast() {
 				retJson.MessageType = "event"
 			}
 			ret, err := json.Marshal(retJson)
-			Utils.Errhandle(err)
+			Utils.ErrHandle(err)
 			username := event.User
 			BroadCast(username, ret)
 		}

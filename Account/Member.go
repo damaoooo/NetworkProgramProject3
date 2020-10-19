@@ -29,7 +29,7 @@ func GetMembers(connection net.Conn, requestJson ORM.MessageBlock) {
 		retJson.Member = append(retJson.Member, newMember)
 	}
 	ret, err := json.Marshal(retJson)
-	Utils.Errhandle(err)
+	Utils.ErrHandle(err)
 	_, err = connection.Write(ret)
-	Utils.Errhandle(err)
+	Utils.ErrHandle(err)
 }
