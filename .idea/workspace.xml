@@ -20,10 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4e50f175-bd03-488f-8646-616e9b0c72cb" name="Default Changelist" comment="Finish-Broadcast">
+      <change afterPath="$PROJECT_DIR$/Utils/Session.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BroadCast/BroadCast.go" beforeDir="false" afterPath="$PROJECT_DIR$/BroadCast/BroadCast.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utils/Wigets.go" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/Wigets.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +61,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RunManager">
     <configuration name="go build NPProj3" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
@@ -148,15 +146,15 @@
     </state>
     <state width="1877" height="210" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1603202593985" />
     <state width="1877" height="210" key="GridCell.Tab.1.right/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603188197036" />
-    <state x="490" y="116" key="SettingsEditor" timestamp="1603069344308">
+    <state x="490" y="116" key="SettingsEditor" timestamp="1603261748495">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="490" y="116" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1603069344308" />
+    <state x="490" y="116" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1603261748495" />
     <state x="490" y="116" key="SettingsEditor/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603031361000" />
-    <state x="552" y="252" key="Vcs.Push.Dialog.v2" timestamp="1603101621268">
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2" timestamp="1603261554754">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1603070490294" />
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1603261554754" />
     <state x="552" y="252" key="Vcs.Push.Dialog.v2/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603101621268" />
     <state x="763" y="432" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1603042296373">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -170,21 +168,12 @@
       <screen x="0" y="1080" width="1920" height="1040" />
     </state>
     <state x="0" y="1100" width="1563" height="790" maximized="true" key="dock-window-2/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603186308097" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1603099981434">
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1603289228309">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603099981434" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603289228309" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/main.go</url>
-          <line>17</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="GoApplicationRunConfiguration">
         <watch expression="Utils.MessageBox" language="go" />
