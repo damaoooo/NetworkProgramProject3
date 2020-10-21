@@ -38,3 +38,11 @@ func EventBroadcast() {
 		}
 	}
 }
+
+func MessageListen() {
+	for {
+		if !Utils.MessageQueue.IsEmpty() {
+			EventBroadcast()
+		}
+	}
+}

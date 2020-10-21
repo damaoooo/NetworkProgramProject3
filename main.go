@@ -4,38 +4,38 @@ import (
 	"NPProj3/Account"
 	"NPProj3/BroadCast"
 	"NPProj3/Chat"
-	"NPProj3/ORM"
 	"NPProj3/Utils"
-	"encoding/json"
 	"fmt"
 	"io"
 	"net"
+	"syscall"
 )
 
 func Dispatcher(connect net.Conn) {
 	buf := make([]byte, 4096)
+OUT:
 	for {
 		cnt, err := connect.Read(buf)
-		if err != nil || cnt == 0 {
-			if err == io.EOF {
-				fmt.Printf("[-] Client %v disconnected \n", connect.RemoteAddr())
-				break
+		switch err {
+		case io.EOF:
+			fmt.Printf("[-] Client %v disconnected \n", connect.RemoteAddr())
+			break OUT
+		case nil:
+		default:
+			switch t := err.(type) {
+			case *net.OpError:
+				if t.Op == "read" {
+					fmt.Printf("[-] Client %v interrupted \n", connect.RemoteAddr())
+					break OUT
+				}
+			case syscall.Errno:
+				if t == syscall.ECONNREFUSED {
+					fmt.Printf("[-] Client %v interrupted \n", connect.RemoteAddr())
+					break OUT
+				}
 			}
-			Utils.ErrHandle(err)
-			err = connect.Close()
-			Utils.ErrHandle(err)
-			break
 		}
-		recvJson := new(ORM.MessageBlock)
-		confirmJson := new(ORM.CommonResponse)
-		err = json.Unmarshal(buf[:cnt], confirmJson)
-		Utils.ErrHandle(err)
-		if confirmJson.Result == "success" {
-			continue
-		}
-		err = json.Unmarshal(buf[:cnt], recvJson)
-		Utils.ErrHandle(err)
-		messageType := recvJson.MessageType
+		messageType, recvJson := Utils.UnSerialize(buf[:cnt])
 		switch messageType {
 		case "login":
 			Account.Login(connect, *recvJson)
@@ -47,17 +47,11 @@ func Dispatcher(connect net.Conn) {
 			Chat.GroupChat(connect, *recvJson)
 		case "person":
 			Chat.PersonalChat(connect, *recvJson)
+		case "ack":
+			continue
 		}
 	}
 
-}
-
-func MessageListen() {
-	for {
-		if !Utils.MessageQueue.IsEmpty() {
-			BroadCast.EventBroadcast()
-		}
-	}
 }
 
 func main() {
@@ -67,7 +61,7 @@ func main() {
 		return
 	}
 	fmt.Println("[+] Server start at port 5123")
-	go MessageListen()
+	go BroadCast.MessageListen()
 	fmt.Println("[+] Start Event Listening")
 	for {
 		conn, err := server.Accept()
@@ -75,4 +69,5 @@ func main() {
 		Utils.ErrHandle(err)
 		go Dispatcher(conn)
 	}
+	//TODO: 未验证身份的用户调用API的处理，即session
 }

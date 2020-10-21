@@ -1,13 +1,14 @@
 package Utils
 
 import (
+	"NPProj3/ORM"
+	"encoding/json"
 	"log"
 	"net"
 )
 
 var ConnectionMap = make(map[string]net.Conn)
 var MessageQueue = InitQueue()
-var MessageBox = make(chan int)
 
 func ErrHandle(e interface{}) {
 	if e != nil {
@@ -15,10 +16,15 @@ func ErrHandle(e interface{}) {
 	}
 }
 
-//func MessageListen(){
-//	for{
-//		if !MessageQueue.IsEmpty(){
-//			MessageBox <- 1
-//		}
-//	}
-//}
+func UnSerialize(buf []byte) (string, *ORM.MessageBlock) {
+	recvJson := new(ORM.MessageBlock)
+	confirmJson := new(ORM.CommonResponse)
+	err := json.Unmarshal(buf, confirmJson)
+	err = json.Unmarshal(buf, recvJson)
+	ErrHandle(err)
+	if confirmJson.Result == "success" {
+		return "ack", nil
+	} else {
+		return recvJson.MessageType, recvJson
+	}
+}
