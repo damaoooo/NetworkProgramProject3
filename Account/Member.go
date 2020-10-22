@@ -24,7 +24,7 @@ func GetMembers(connection net.Conn, requestJson ORM.MessageBlock) {
 		Uuid:   uuid,
 		Member: nil,
 	}
-	for key, _ := range Utils.ConnectionMap {
+	for key := range Utils.ConnectionMap {
 		newMember := UserInfo{Username: key}
 		retJson.Member = append(retJson.Member, newMember)
 	}
