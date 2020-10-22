@@ -16,6 +16,12 @@ var SessionM = SessionManager{
 	Lock:     sync.Mutex{},
 	Err:      SessionError{},
 }
+var FileManager = FileList{
+	Length: 0,
+	List:   nil,
+	Lock:   sync.Mutex{},
+	Err:    FileErr{},
+}
 
 func ErrHandle(e interface{}) {
 	if e != nil {
@@ -40,7 +46,7 @@ func SessionValidate(req ORM.MessageBlock, conn net.Conn) bool {
 	if req.MessageType == "login" {
 		return true
 	} else {
-		if SessionM.IsValid(req.Session) {
+		if SessionM.isValid(req.Session) {
 			return true
 		} else {
 			failedJson := ORM.WrongSession{Info: "Go Away!"}

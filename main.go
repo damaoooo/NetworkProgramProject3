@@ -4,6 +4,7 @@ import (
 	"NPProj3/Account"
 	"NPProj3/BroadCast"
 	"NPProj3/Chat"
+	"NPProj3/File"
 	"NPProj3/Utils"
 	"fmt"
 	"io"
@@ -50,6 +51,8 @@ OUT:
 			Chat.GroupChat(connect, *recvJson)
 		case "person":
 			Chat.PersonalChat(connect, *recvJson)
+		case "group_file":
+			File.GroupFile(connect, *recvJson)
 		case "ack":
 			continue
 		}
@@ -72,5 +75,5 @@ func main() {
 		Utils.ErrHandle(err)
 		go Dispatcher(conn)
 	}
-	//TODO: 未验证身份的用户调用API的处理，即session
+
 }

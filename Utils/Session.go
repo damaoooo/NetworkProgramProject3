@@ -23,7 +23,7 @@ type SessionManager struct {
 }
 
 type SessionError struct {
-	errorDescription string //error description
+	errorDescription string
 }
 
 func (s *SessionError) Error() error {
@@ -42,46 +42,43 @@ func (s *SessionManager) GenerateNew(username string) string {
 		Username: username,
 	}
 	s.Lock.Lock()
+	defer s.Lock.Unlock()
 	s.Sessions[md5str] = ret
-	s.Lock.Unlock()
 	return ret.Session
 }
 
-func (s *SessionManager) IsValid(session string) bool {
-	s.Lock.Lock()
+// isValid func haven't lock to avoid duplicate lock operation,
+//that means, you should add lock by your self.
+func (s *SessionManager) isValid(session string) bool {
 	if _, ok := s.Sessions[session]; ok {
-		s.Lock.Unlock()
 		return true
 	} else {
-		s.Lock.Unlock()
 		return false
 	}
 }
 
 func (s *SessionManager) Update(session string) error {
 	s.Lock.Lock()
-	if s.IsValid(session) {
+	defer s.Lock.Unlock()
+	if s.isValid(session) {
 		ns := s.Sessions[session]
 		ns.LastTime = time.Now().Unix()
 		s.Sessions[session] = ns
-		s.Lock.Unlock()
 		return nil
 	} else {
 		s.Err.errorDescription = "no such session, update failed"
-		s.Lock.Unlock()
 		return s.Err.Error()
 	}
 }
 
 func (s *SessionManager) Destroy(session string) error {
 	s.Lock.Lock()
-	if s.IsValid(session) {
+	defer s.Lock.Unlock()
+	if s.isValid(session) {
 		delete(s.Sessions, session)
-		s.Lock.Unlock()
 		return nil
 	} else {
 		s.Err.errorDescription = "no such session, destroy failed"
-		s.Lock.Unlock()
 		return s.Err.Error()
 	}
 }
