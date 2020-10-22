@@ -15,7 +15,7 @@ func GroupFile(connection net.Conn, req ORM.MessageBlock) {
 		err := os.Mkdir("./group", 0777)
 		Unit.ErrHandle(err)
 	}
-	file, err := os.Create("./group/" + fileInfo.MD5)
+	file, err := os.Create("./group/" + fileInfo.Name)
 	Utils.ErrHandle(err)
 	err = Utils.FileManager.AddFile(req.Uuid, file, fileInfo)
 	Unit.ErrHandle(err)
@@ -38,8 +38,4 @@ func isExist(path string) bool {
 		return false
 	}
 	return true
-}
-
-func fileRecv(file *os.File) {
-	Unit.ErrHandle(file) //TODO:怎么收文件
 }

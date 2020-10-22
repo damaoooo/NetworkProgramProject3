@@ -2,9 +2,13 @@ package Utils
 
 import (
 	"NPProj3/ORM"
+	"crypto/md5"
+	"encoding/hex"
 	"encoding/json"
+	"io"
 	"log"
 	"net"
+	"os"
 	"sync"
 )
 
@@ -57,4 +61,22 @@ func SessionValidate(req ORM.MessageBlock, conn net.Conn) bool {
 			return false
 		}
 	}
+}
+
+func FileMD5Path(path string) string {
+	file, err := os.Open(path)
+	ErrHandle(err)
+	md5_ := md5.New()
+	_, err = io.Copy(md5_, file)
+	ErrHandle(err)
+	md5String := hex.EncodeToString(md5_.Sum(nil))
+	return md5String
+}
+
+func FileMD5FileDescriptor(file *os.File) string {
+	md5_ := md5.New()
+	_, err := io.Copy(md5_, file)
+	ErrHandle(err)
+	md5String := hex.EncodeToString(md5_.Sum(nil))
+	return md5String
 }

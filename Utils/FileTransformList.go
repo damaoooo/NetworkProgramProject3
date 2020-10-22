@@ -12,6 +12,7 @@ type FileItem struct {
 	FileDescriptor *os.File
 	FileInfo       ORM.FileInfo
 	Offset         int64
+	State          string
 }
 
 type FileList struct {
@@ -40,6 +41,8 @@ func (f *FileList) AddFile(uuid string, fileDescriptor *os.File, fileInfo ORM.Fi
 		Uuid:           uuid,
 		FileInfo:       fileInfo,
 		FileDescriptor: fileDescriptor,
+		Offset:         int64(0),
+		State:          "on_trans",
 	}
 	f.Lock.Lock()
 	defer f.Lock.Unlock()
@@ -107,13 +110,19 @@ func (f *FileList) WriteBytes(uuid string, data []byte) bool {
 }
 
 // You should call IsUUIDExist() First Before Use this func
-func (f *FileList) Finish(uuid string) {
-	index := 0
+func (f *FileList) Finish(uuid string) error {
 	for _, file := range f.List {
-		if file.Uuid != uuid {
-			f.List[index] = file
-			index++
+		if file.Uuid == uuid {
+			md5Value := FileMD5FileDescriptor(file.FileDescriptor)
+			if md5Value == file.FileInfo.MD5 {
+				file.State = "finish"
+				return nil
+			} else {
+				file.State = "wrong"
+				return errors.New("md5 checksum failed")
+			}
+
 		}
 	}
-	f.List = f.List[:index]
+	return errors.New("no such file")
 }

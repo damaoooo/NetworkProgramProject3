@@ -20,12 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4e50f175-bd03-488f-8646-616e9b0c72cb" name="Default Changelist" comment="Working-on-file">
-      <change afterPath="$PROJECT_DIR$/Utils/FileTransformList.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/File/GroupFileList.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/File/GroupFile.go" beforeDir="false" afterPath="$PROJECT_DIR$/File/GroupFile.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utils/Session.go" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/Session.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/FileTransformList.go" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/FileTransformList.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Utils/Wigets.go" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/Wigets.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,11 +159,11 @@
     </state>
     <state x="490" y="116" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1603261748495" />
     <state x="764" y="135" key="SettingsEditor/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603336838366" />
-    <state x="552" y="252" key="Vcs.Push.Dialog.v2" timestamp="1603339308931">
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2" timestamp="1603372908811">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="552" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1603261554754" />
-    <state x="552" y="252" key="Vcs.Push.Dialog.v2/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603339308931" />
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603372908811" />
     <state x="763" y="432" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1603336446018">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
