@@ -5,10 +5,17 @@ import (
 	"encoding/json"
 	"log"
 	"net"
+	"sync"
 )
 
 var ConnectionMap = make(map[string]net.Conn)
 var MessageQueue = InitQueue()
+var SessionMaps = make(map[string]Session)
+var SessionM = SessionManager{
+	Sessions: SessionMaps,
+	Lock:     sync.Mutex{},
+	Err:      SessionError{},
+}
 
 func ErrHandle(e interface{}) {
 	if e != nil {
@@ -26,5 +33,22 @@ func UnSerialize(buf []byte) (string, *ORM.MessageBlock) {
 		return "ack", nil
 	} else {
 		return recvJson.MessageType, recvJson
+	}
+}
+
+func SessionValidate(req ORM.MessageBlock, conn net.Conn) bool {
+	if req.MessageType == "login" {
+		return true
+	} else {
+		if SessionM.IsValid(req.Session) {
+			return true
+		} else {
+			failedJson := ORM.WrongSession{Info: "Go Away!"}
+			failedByte, err := json.Marshal(failedJson)
+			ErrHandle(err)
+			_, err = conn.Write(failedByte)
+			ErrHandle(err)
+			return false
+		}
 	}
 }

@@ -36,6 +36,9 @@ OUT:
 			}
 		}
 		messageType, recvJson := Utils.UnSerialize(buf[:cnt])
+		if !Utils.SessionValidate(*recvJson, connect) {
+			continue
+		}
 		switch messageType {
 		case "login":
 			Account.Login(connect, *recvJson)

@@ -4,13 +4,14 @@ import (
 	"NPProj3/ORM"
 	"NPProj3/Utils"
 	"encoding/json"
+	"log"
 	"net"
 )
 
 func Login(connection net.Conn, request ORM.MessageBlock) {
 	username := request.Username
 	uuid := request.Uuid
-	retJson := ORM.CommonResponse{Uuid: uuid}
+	retJson := ORM.LoginResponse{Uuid: uuid}
 	if _, ok := Utils.ConnectionMap[username]; ok {
 		retJson.Result = "multi-username"
 	} else {
@@ -22,6 +23,7 @@ func Login(connection net.Conn, request ORM.MessageBlock) {
 			Case: "online",
 		}
 		Utils.MessageQueue.Add(event)
+		retJson.Session = Utils.SessionM.GenerateNew(username)
 	}
 	ret, err := json.Marshal(retJson)
 	Utils.ErrHandle(err)
@@ -43,6 +45,10 @@ func Logout(connection net.Conn, request ORM.MessageBlock) {
 			Case: "offline",
 		}
 		Utils.MessageQueue.Add(event)
+		err := Utils.SessionM.Destroy(request.Session)
+		if err != nil {
+			log.Fatal(err)
+		}
 	} else {
 		retJson.Result = "no-user"
 	}

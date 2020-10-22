@@ -30,7 +30,7 @@ func (s *SessionError) Error() error {
 	return errors.New(s.errorDescription)
 }
 
-func (s *SessionManager) GenerateNewSession(username string) *Session {
+func (s *SessionManager) GenerateNew(username string) string {
 	UUID := uuid.Must(uuid.NewV4()).String()
 	data := []byte(username + UUID)
 	hash := md5.Sum(data)
@@ -44,10 +44,10 @@ func (s *SessionManager) GenerateNewSession(username string) *Session {
 	s.Lock.Lock()
 	s.Sessions[md5str] = ret
 	s.Lock.Unlock()
-	return &ret
+	return ret.Session
 }
 
-func (s *SessionManager) IsValidSession(session string) bool {
+func (s *SessionManager) IsValid(session string) bool {
 	s.Lock.Lock()
 	if _, ok := s.Sessions[session]; ok {
 		s.Lock.Unlock()
@@ -58,14 +58,30 @@ func (s *SessionManager) IsValidSession(session string) bool {
 	}
 }
 
-func (s *SessionManager) UpdateSession(session string) error {
-	if s.IsValidSession(session) {
+func (s *SessionManager) Update(session string) error {
+	s.Lock.Lock()
+	if s.IsValid(session) {
 		ns := s.Sessions[session]
 		ns.LastTime = time.Now().Unix()
 		s.Sessions[session] = ns
+		s.Lock.Unlock()
 		return nil
 	} else {
 		s.Err.errorDescription = "no such session, update failed"
+		s.Lock.Unlock()
+		return s.Err.Error()
+	}
+}
+
+func (s *SessionManager) Destroy(session string) error {
+	s.Lock.Lock()
+	if s.IsValid(session) {
+		delete(s.Sessions, session)
+		s.Lock.Unlock()
+		return nil
+	} else {
+		s.Err.errorDescription = "no such session, destroy failed"
+		s.Lock.Unlock()
 		return s.Err.Error()
 	}
 }
