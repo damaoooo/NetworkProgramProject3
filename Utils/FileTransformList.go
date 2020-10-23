@@ -12,7 +12,7 @@ type FileItem struct {
 	FileDescriptor *os.File
 	FileInfo       ORM.FileInfo
 	Offset         int64
-	State          string
+	State          int
 }
 
 type FileList struct {
@@ -21,6 +21,14 @@ type FileList struct {
 	Lock   sync.Mutex
 	Err    FileErr
 }
+
+type fileState struct {
+	Finish int
+	Wrong  int
+	Wait   int
+}
+
+var FileState = fileState{1, 2, 3}
 
 type FileErr struct {
 	errDescription string
@@ -42,7 +50,7 @@ func (f *FileList) AddFile(uuid string, fileDescriptor *os.File, fileInfo ORM.Fi
 		FileInfo:       fileInfo,
 		FileDescriptor: fileDescriptor,
 		Offset:         int64(0),
-		State:          "on_trans",
+		State:          FileState.Wait,
 	}
 	f.Lock.Lock()
 	defer f.Lock.Unlock()
@@ -78,7 +86,7 @@ func (f *FileList) IsExist(md5 string) bool {
 	return true
 }
 
-func (f *FileList) FindFileItem(uuid string) *FileItem {
+func (f *FileList) FindFileItemByUUID(uuid string) *FileItem {
 	f.Lock.Lock()
 	defer f.Lock.Unlock()
 	for _, file := range f.List {
@@ -99,7 +107,7 @@ func (f *FileList) IsUUIDExist(uuid string) bool {
 }
 
 func (f *FileList) WriteBytes(uuid string, data []byte) bool {
-	file := f.FindFileItem(uuid)
+	file := f.FindFileItemByUUID(uuid)
 	if file != nil {
 		err := file.WriteIn(data)
 		ErrHandle(err)
@@ -115,10 +123,10 @@ func (f *FileList) Finish(uuid string) error {
 		if file.Uuid == uuid {
 			md5Value := FileMD5FileDescriptor(file.FileDescriptor)
 			if md5Value == file.FileInfo.MD5 {
-				file.State = "finish"
+				file.State = FileState.Finish
 				return nil
 			} else {
-				file.State = "wrong"
+				file.State = FileState.Wrong
 				return errors.New("md5 checksum failed")
 			}
 

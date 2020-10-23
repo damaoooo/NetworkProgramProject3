@@ -14,15 +14,14 @@ import (
 
 var ConnectionMap = make(map[string]net.Conn)
 var MessageQueue = InitQueue()
-var SessionMaps = make(map[string]Session)
 var SessionM = SessionManager{
-	Sessions: SessionMaps,
+	Sessions: map[string]Session(nil),
 	Lock:     sync.Mutex{},
 	Err:      SessionError{},
 }
 var FileManager = FileList{
 	Length: 0,
-	List:   nil,
+	List:   []FileItem(nil),
 	Lock:   sync.Mutex{},
 	Err:    FileErr{},
 }

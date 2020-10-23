@@ -58,3 +58,19 @@ func Logout(connection net.Conn, request ORM.MessageBlock) {
 	_, err = connection.Write(ret)
 	Utils.ErrHandle(err)
 }
+
+func InterruptQuit(conn net.Conn) {
+	interruptUsername := ""
+	for user, connection := range Utils.ConnectionMap {
+		if connection == conn {
+			interruptUsername = user
+			delete(Utils.ConnectionMap, user)
+		}
+	}
+	event := ORM.Event{
+		Type: "offline",
+		User: interruptUsername,
+		Case: "offline",
+	}
+	Utils.MessageQueue.Add(event)
+}

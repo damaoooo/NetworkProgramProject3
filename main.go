@@ -27,11 +27,13 @@ OUT:
 			case *net.OpError:
 				if t.Op == "read" {
 					fmt.Printf("[-] Client %v interrupted \n", connect.RemoteAddr())
+					Account.InterruptQuit(connect)
 					break OUT
 				}
 			case syscall.Errno:
 				if t == syscall.ECONNREFUSED {
 					fmt.Printf("[-] Client %v interrupted \n", connect.RemoteAddr())
+					Account.InterruptQuit(connect)
 					break OUT
 				}
 			}
@@ -53,6 +55,8 @@ OUT:
 			Chat.PersonalChat(connect, *recvJson)
 		case "group_file":
 			File.GroupFile(connect, *recvJson)
+		case "group_file_list":
+			File.GroupFileList(connect, *recvJson)
 		case "ack":
 			continue
 		}

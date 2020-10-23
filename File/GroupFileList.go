@@ -2,9 +2,32 @@ package File
 
 import (
 	"NPProj3/ORM"
+	"NPProj3/Utils"
+	"encoding/json"
+	"myTest/Unit"
 	"net"
 )
 
-func GroupFileList(connection net.Conn, req ORM.MessageBlock) {
+type ListResponse struct {
+	Uuid          string         `json:"uuid"`
+	Result        string         `json:"result"`
+	GroupFileList []ORM.FileInfo `json:"group_file_list"`
+}
 
+func GroupFileList(connection net.Conn, req ORM.MessageBlock) {
+	fileList := []ORM.FileInfo(nil)
+	for _, file := range Utils.FileManager.List {
+		if file.State == Utils.FileState.Finish {
+			fileList = append(fileList, file.FileInfo)
+		}
+	}
+	retJson := ListResponse{
+		Uuid:          req.Uuid,
+		Result:        "success",
+		GroupFileList: fileList,
+	}
+	retByte, err := json.Marshal(retJson)
+	Unit.ErrHandle(err)
+	_, err = connection.Write(retByte)
+	Unit.ErrHandle(err)
 }
