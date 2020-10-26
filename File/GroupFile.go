@@ -37,7 +37,14 @@ func GroupFileDownload(connection net.Conn, req ORM.MessageBlock) {
 	if fileHandle := Utils.FileManager.FindFileItemByMD5(fileMD5); fileHandle != nil {
 		go SendFileMeta(connection, fileHandle.FileDescriptor, req)
 	} else {
-		// TODO: Return A Json Indicate No this File
+		respJson := ORM.CommonResponse{
+			Result: "No Such File",
+			Uuid:   req.Uuid,
+		}
+		respByte, err := json.Marshal(respJson)
+		Wigets.ErrHandle(err)
+		_, err = connection.Write(respByte)
+		Wigets.ErrHandle(err)
 	}
 }
 

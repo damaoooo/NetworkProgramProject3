@@ -68,6 +68,17 @@ func InterruptQuit(conn net.Conn) {
 			delete(Utils.ConnectionMap, user)
 		}
 	}
+	sessionString := ""
+	for sessionKey, session := range Utils.SessionM.Sessions {
+		if session.Username == interruptUsername {
+			sessionString = sessionKey
+			break
+		}
+	}
+	if sessionString != "" {
+		_ = Utils.SessionM.Destroy(sessionString)
+	}
+
 	event := ORM.Event{
 		Type: "offline",
 		User: interruptUsername,

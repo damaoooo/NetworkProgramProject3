@@ -28,6 +28,15 @@ var FileManager = FileList{
 	Err:    FileErr{},
 }
 
+func FindConnByUsername(name string) net.Conn {
+	for username, conn := range ConnectionMap {
+		if username == name {
+			return conn
+		}
+	}
+	return nil
+}
+
 func UnSerialize(buf []byte) (string, *ORM.MessageBlock) {
 	recvJson := new(ORM.MessageBlock)
 	confirmJson := new(ORM.CommonResponse)

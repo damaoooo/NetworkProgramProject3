@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="BranchesTreeState">
     <expand>
       <path>
@@ -20,16 +23,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4e50f175-bd03-488f-8646-616e9b0c72cb" name="Default Changelist" comment="Meta-FileWorking">
-      <change afterPath="$PROJECT_DIR$/Wigets/Wigets.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/File/PersonalFile.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Account/Login.go" beforeDir="false" afterPath="$PROJECT_DIR$/Account/Login.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Account/Member.go" beforeDir="false" afterPath="$PROJECT_DIR$/Account/Member.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BroadCast/BroadCast.go" beforeDir="false" afterPath="$PROJECT_DIR$/BroadCast/BroadCast.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/File/GroupFile.go" beforeDir="false" afterPath="$PROJECT_DIR$/File/GroupFile.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/File/RecvFileFromClient.go" beforeDir="false" afterPath="$PROJECT_DIR$/File/RecvFileFromClient.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/File/SendFileToClient.go" beforeDir="false" afterPath="$PROJECT_DIR$/File/SendFileToClient.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ORM/CommonResponse.go" beforeDir="false" afterPath="$PROJECT_DIR$/ORM/CommonResponse.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utils/FileTransformList.go" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/FileTransformList.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ORM/RequestJson.go" beforeDir="false" afterPath="$PROJECT_DIR$/ORM/RequestJson.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Utils/Wigets.go" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/Wigets.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
@@ -123,26 +122,26 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="555" height="507" key="DebuggerActiveHint/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603186683640" />
-    <state width="1877" height="210" key="GridCell.Tab.0.bottom" timestamp="1603202593984">
+    <state width="1877" height="118" key="GridCell.Tab.0.bottom" timestamp="1603708915171">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1877" height="210" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1603202593984" />
-    <state width="1877" height="210" key="GridCell.Tab.0.bottom/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603188208503" />
-    <state width="1877" height="210" key="GridCell.Tab.0.center" timestamp="1603202593984">
+    <state width="1877" height="118" key="GridCell.Tab.0.bottom/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603708915171" />
+    <state width="1877" height="118" key="GridCell.Tab.0.center" timestamp="1603708915171">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1877" height="210" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1603202593984" />
-    <state width="1877" height="210" key="GridCell.Tab.0.center/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603188208503" />
-    <state width="1877" height="210" key="GridCell.Tab.0.left" timestamp="1603202593983">
+    <state width="1877" height="118" key="GridCell.Tab.0.center/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603708915171" />
+    <state width="1877" height="118" key="GridCell.Tab.0.left" timestamp="1603708915170">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1877" height="210" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1603202593983" />
-    <state width="1877" height="210" key="GridCell.Tab.0.left/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603188208503" />
-    <state width="1877" height="210" key="GridCell.Tab.0.right" timestamp="1603202593984">
+    <state width="1877" height="118" key="GridCell.Tab.0.left/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603708915170" />
+    <state width="1877" height="118" key="GridCell.Tab.0.right" timestamp="1603708915171">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1877" height="210" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1603202593984" />
-    <state width="1877" height="210" key="GridCell.Tab.0.right/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603188208503" />
+    <state width="1877" height="118" key="GridCell.Tab.0.right/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603708915171" />
     <state width="1877" height="210" key="GridCell.Tab.1.bottom" timestamp="1603202593985">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -172,11 +171,11 @@
     </state>
     <state x="490" y="116" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1603261748495" />
     <state x="764" y="135" key="SettingsEditor/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603336838366" />
-    <state x="552" y="252" key="Vcs.Push.Dialog.v2" timestamp="1603676009648">
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2" timestamp="1603684351787">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="552" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1603676009648" />
-    <state x="552" y="252" key="Vcs.Push.Dialog.v2/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603463471499" />
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603684351787" />
     <state x="734" y="267" key="com.goide.refactor.move.GoMoveDeclarationDialog" timestamp="1603683926034">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -194,10 +193,11 @@
       <screen x="0" y="1080" width="1920" height="1040" />
     </state>
     <state x="0" y="1100" width="1563" height="790" maximized="true" key="dock-window-2/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603186308097" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1603289228309">
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1603711540566">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603289228309" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1603711540566" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603705323554" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

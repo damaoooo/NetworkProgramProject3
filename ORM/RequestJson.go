@@ -17,3 +17,10 @@ type FileInfo struct {
 	Size string `json:"size"`
 	MD5  string `json:"MD5"`
 }
+
+type FileSendToClient struct {
+	MessageType string   `json:"message_type"`
+	From        string   `json:"from"`
+	Uuid        string   `json:"uuid"`
+	FileInfo    FileInfo `json:"file_info"`
+}

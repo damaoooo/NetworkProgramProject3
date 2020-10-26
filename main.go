@@ -60,6 +60,11 @@ OUT:
 			File.GroupFileList(connect, *recvJson)
 		case "file_send":
 			File.RecvFileMeta(connect, *recvJson)
+		case "download_group_file":
+			File.GroupFileDownload(connect, *recvJson)
+		case "person_file":
+			File.PersonalFile(connect, *recvJson)
+
 		case "ack":
 			continue
 		}
