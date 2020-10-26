@@ -20,3 +20,10 @@ type LoginResponse struct {
 type WrongSession struct {
 	Info string `json:"info"`
 }
+
+type SendFileResponse struct {
+	Uuid        string `json:"uuid"`
+	MessageType string `json:"message_type"`
+	Plain       string `json:"plain"`
+	Content     []byte `json:"content"`
+}

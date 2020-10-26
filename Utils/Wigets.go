@@ -2,15 +2,17 @@ package Utils
 
 import (
 	"NPProj3/ORM"
+	"NPProj3/Wigets"
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/json"
 	"io"
-	"log"
 	"net"
 	"os"
 	"sync"
 )
+
+var FileFolder = "./"
 
 var ConnectionMap = make(map[string]net.Conn)
 var MessageQueue = InitQueue()
@@ -26,18 +28,12 @@ var FileManager = FileList{
 	Err:    FileErr{},
 }
 
-func ErrHandle(e interface{}) {
-	if e != nil {
-		log.Fatal(e)
-	}
-}
-
 func UnSerialize(buf []byte) (string, *ORM.MessageBlock) {
 	recvJson := new(ORM.MessageBlock)
 	confirmJson := new(ORM.CommonResponse)
 	err := json.Unmarshal(buf, confirmJson)
 	err = json.Unmarshal(buf, recvJson)
-	ErrHandle(err)
+	Wigets.ErrHandle(err)
 	if confirmJson.Result == "success" {
 		return "ack", nil
 	} else {
@@ -54,9 +50,9 @@ func SessionValidate(req ORM.MessageBlock, conn net.Conn) bool {
 		} else {
 			failedJson := ORM.WrongSession{Info: "Go Away!"}
 			failedByte, err := json.Marshal(failedJson)
-			ErrHandle(err)
+			Wigets.ErrHandle(err)
 			_, err = conn.Write(failedByte)
-			ErrHandle(err)
+			Wigets.ErrHandle(err)
 			return false
 		}
 	}
@@ -64,10 +60,10 @@ func SessionValidate(req ORM.MessageBlock, conn net.Conn) bool {
 
 func FileMD5Path(path string) string {
 	file, err := os.Open(path)
-	ErrHandle(err)
+	Wigets.ErrHandle(err)
 	md5_ := md5.New()
 	_, err = io.Copy(md5_, file)
-	ErrHandle(err)
+	Wigets.ErrHandle(err)
 	md5String := hex.EncodeToString(md5_.Sum(nil))
 	return md5String
 }
@@ -75,7 +71,7 @@ func FileMD5Path(path string) string {
 func FileMD5FileDescriptor(file *os.File) string {
 	md5_ := md5.New()
 	_, err := io.Copy(md5_, file)
-	ErrHandle(err)
+	Wigets.ErrHandle(err)
 	md5String := hex.EncodeToString(md5_.Sum(nil))
 	return md5String
 }

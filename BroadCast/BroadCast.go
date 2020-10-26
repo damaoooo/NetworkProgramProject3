@@ -3,6 +3,7 @@ package BroadCast
 import (
 	"NPProj3/ORM"
 	"NPProj3/Utils"
+	"NPProj3/Wigets"
 	"encoding/json"
 	"github.com/satori/go.uuid"
 )
@@ -11,7 +12,7 @@ func BroadCast(userName string, info []byte) {
 	for username, conn := range Utils.ConnectionMap {
 		if username != userName {
 			_, err := conn.Write(info)
-			Utils.ErrHandle(err)
+			Wigets.ErrHandle(err)
 		}
 	}
 }
@@ -32,7 +33,7 @@ func EventBroadcast() {
 				retJson.MessageType = "event"
 			}
 			ret, err := json.Marshal(retJson)
-			Utils.ErrHandle(err)
+			Wigets.ErrHandle(err)
 			username := event.User
 			BroadCast(username, ret)
 		}

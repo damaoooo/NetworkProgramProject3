@@ -3,6 +3,7 @@ package Account
 import (
 	"NPProj3/ORM"
 	"NPProj3/Utils"
+	"NPProj3/Wigets"
 	"encoding/json"
 	"log"
 	"net"
@@ -26,9 +27,9 @@ func Login(connection net.Conn, request ORM.MessageBlock) {
 		retJson.Session = Utils.SessionM.GenerateNew(username)
 	}
 	ret, err := json.Marshal(retJson)
-	Utils.ErrHandle(err)
+	Wigets.ErrHandle(err)
 	_, err = connection.Write(ret)
-	Utils.ErrHandle(err)
+	Wigets.ErrHandle(err)
 }
 
 func Logout(connection net.Conn, request ORM.MessageBlock) {
@@ -54,9 +55,9 @@ func Logout(connection net.Conn, request ORM.MessageBlock) {
 	}
 
 	ret, err := json.Marshal(retJson)
-	Utils.ErrHandle(err)
+	Wigets.ErrHandle(err)
 	_, err = connection.Write(ret)
-	Utils.ErrHandle(err)
+	Wigets.ErrHandle(err)
 }
 
 func InterruptQuit(conn net.Conn) {

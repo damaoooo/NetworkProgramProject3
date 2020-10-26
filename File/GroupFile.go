@@ -3,30 +3,42 @@ package File
 import (
 	"NPProj3/ORM"
 	"NPProj3/Utils"
+	"NPProj3/Wigets"
 	"encoding/json"
-	"myTest/Unit"
 	"net"
 	"os"
+	"path/filepath"
+	"strings"
 )
 
-func GroupFile(connection net.Conn, req ORM.MessageBlock) {
+func GroupFileUpload(connection net.Conn, req ORM.MessageBlock) {
+	groupFilePath := filepath.Join(Utils.FileFolder, "./group")
 	fileInfo := req.FileInfo
-	if !isExist("./group") {
-		err := os.Mkdir("./group", 0777)
-		Unit.ErrHandle(err)
+	if !isExist(groupFilePath) {
+		err := os.Mkdir(groupFilePath, 0777)
+		Wigets.ErrHandle(err)
 	}
-	file, err := os.Create("./group/" + fileInfo.Name)
-	Utils.ErrHandle(err)
+	file, err := os.Create(filepath.Join(groupFilePath, fileInfo.Name))
+	Wigets.ErrHandle(err)
 	err = Utils.FileManager.AddFile(req.Uuid, file, fileInfo)
-	Unit.ErrHandle(err)
+	Wigets.ErrHandle(err)
 	retJson := ORM.CommonResponse{
 		Result: "success",
 		Uuid:   req.Uuid,
 	}
 	ret, err := json.Marshal(retJson)
-	Unit.ErrHandle(err)
+	Wigets.ErrHandle(err)
 	_, err = connection.Write(ret)
-	Unit.ErrHandle(err)
+	Wigets.ErrHandle(err)
+}
+
+func GroupFileDownload(connection net.Conn, req ORM.MessageBlock) {
+	fileMD5 := strings.ToLower(req.FileInfo.MD5)
+	if fileHandle := Utils.FileManager.FindFileItemByMD5(fileMD5); fileHandle != nil {
+		go SendFileMeta(connection, fileHandle.FileDescriptor, req)
+	} else {
+		// TODO: Return A Json Indicate No this File
+	}
 }
 
 func isExist(path string) bool {

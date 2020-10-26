@@ -2,6 +2,7 @@ package Utils
 
 import (
 	"NPProj3/ORM"
+	"NPProj3/Wigets"
 	"errors"
 	"os"
 	"sync"
@@ -13,6 +14,7 @@ type FileItem struct {
 	FileInfo       ORM.FileInfo
 	Offset         int64
 	State          int
+	Path           string
 }
 
 type FileList struct {
@@ -110,7 +112,7 @@ func (f *FileList) WriteBytes(uuid string, data []byte) bool {
 	file := f.FindFileItemByUUID(uuid)
 	if file != nil {
 		err := file.WriteIn(data)
-		ErrHandle(err)
+		Wigets.ErrHandle(err)
 		return true
 	} else {
 		return false

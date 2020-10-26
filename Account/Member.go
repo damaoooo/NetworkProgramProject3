@@ -3,6 +3,7 @@ package Account
 import (
 	"NPProj3/ORM"
 	"NPProj3/Utils"
+	"NPProj3/Wigets"
 	"encoding/json"
 	"net"
 )
@@ -29,7 +30,7 @@ func GetMembers(connection net.Conn, requestJson ORM.MessageBlock) {
 		retJson.Member = append(retJson.Member, newMember)
 	}
 	ret, err := json.Marshal(retJson)
-	Utils.ErrHandle(err)
+	Wigets.ErrHandle(err)
 	_, err = connection.Write(ret)
-	Utils.ErrHandle(err)
+	Wigets.ErrHandle(err)
 }

@@ -6,6 +6,7 @@ import (
 	"NPProj3/Chat"
 	"NPProj3/File"
 	"NPProj3/Utils"
+	"NPProj3/Wigets"
 	"fmt"
 	"io"
 	"net"
@@ -54,7 +55,7 @@ OUT:
 		case "person":
 			Chat.PersonalChat(connect, *recvJson)
 		case "group_file":
-			File.GroupFile(connect, *recvJson)
+			File.GroupFileUpload(connect, *recvJson)
 		case "group_file_list":
 			File.GroupFileList(connect, *recvJson)
 		case "file_send":
@@ -78,7 +79,7 @@ func main() {
 	for {
 		conn, err := server.Accept()
 		fmt.Printf("[+] Client %v connect\n", conn.RemoteAddr())
-		Utils.ErrHandle(err)
+		Wigets.ErrHandle(err)
 		go Dispatcher(conn)
 	}
 
