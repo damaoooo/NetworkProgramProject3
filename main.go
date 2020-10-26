@@ -57,6 +57,8 @@ OUT:
 			File.GroupFile(connect, *recvJson)
 		case "group_file_list":
 			File.GroupFileList(connect, *recvJson)
+		case "file_send":
+			File.RecvFileMeta(connect, *recvJson)
 		case "ack":
 			continue
 		}

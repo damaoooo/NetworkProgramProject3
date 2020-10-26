@@ -69,10 +69,10 @@ func (f *FileList) AddFile(uuid string, fileDescriptor *os.File, fileInfo ORM.Fi
 func (f *FileList) isExist(md5 string) bool {
 	for _, file := range f.List {
 		if file.FileInfo.MD5 == md5 {
-			return false
+			return true
 		}
 	}
-	return true
+	return false
 }
 
 func (f *FileList) IsExist(md5 string) bool {
@@ -133,4 +133,13 @@ func (f *FileList) Finish(uuid string) error {
 		}
 	}
 	return errors.New("no such file")
+}
+
+func (f *FileList) FindFileItemByMD5(md5 string) *FileItem {
+	for _, file := range f.List {
+		if file.FileInfo.MD5 == md5 {
+			return &file
+		}
+	}
+	return nil
 }

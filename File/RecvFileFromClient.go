@@ -4,7 +4,6 @@ import (
 	"NPProj3/ORM"
 	"NPProj3/Utils"
 	"encoding/json"
-	"myTest/Unit"
 	"net"
 )
 
@@ -14,15 +13,31 @@ func RecvFileMeta(connection net.Conn, req ORM.MessageBlock) {
 		if Utils.FileManager.IsUUIDExist(req.Uuid) {
 			file := Utils.FileManager.FindFileItemByUUID(req.Uuid)
 			err := file.WriteIn(req.Content)
-			Unit.ErrHandle(err)
+			Utils.ErrHandle(err)
 			respJson := ORM.CommonResponse{
 				Result: "success",
 				Uuid:   req.Uuid,
 			}
 			respRet, err := json.Marshal(respJson)
-			Unit.ErrHandle(err)
+			Utils.ErrHandle(err)
 			_, err = connection.Write(respRet)
-			Unit.ErrHandle(err)
+			Utils.ErrHandle(err)
 		}
+	case "finish":
+		err := Utils.FileManager.Finish(req.Uuid)
+		respJson := ORM.CommonResponse{
+			Result: "",
+			Uuid:   req.Uuid,
+		}
+		if err != nil {
+			Utils.ErrHandle(err)
+			respJson.Result = err.Error()
+		} else {
+			respJson.Result = "success"
+		}
+		respRet, err := json.Marshal(respJson)
+		Utils.ErrHandle(err)
+		_, err = connection.Write(respRet)
+		Utils.ErrHandle(err)
 	}
 }

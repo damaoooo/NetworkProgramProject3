@@ -9,6 +9,7 @@ import (
 	"net"
 )
 
+// go round a conn queue to find and send message
 func PersonalChat(connection net.Conn, request ORM.MessageBlock) {
 	newUUID := uuid.Must(uuid.NewV4()).String()
 	newEventReturn := ORM.Event{
