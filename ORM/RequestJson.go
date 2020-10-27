@@ -24,3 +24,8 @@ type FileSendToClient struct {
 	Uuid        string   `json:"uuid"`
 	FileInfo    FileInfo `json:"file_info"`
 }
+
+type ChapAuthToClient struct {
+	HowMany uint32   `json:"how_many"`
+	Nums    []uint32 `json:"nums"`
+}

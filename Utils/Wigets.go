@@ -7,9 +7,11 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"io"
+	"math/rand"
 	"net"
 	"os"
 	"sync"
+	"time"
 )
 
 var FileFolder = "./"
@@ -67,20 +69,55 @@ func SessionValidate(req ORM.MessageBlock, conn net.Conn) bool {
 	}
 }
 
-func FileMD5Path(path string) string {
-	file, err := os.Open(path)
-	Wigets.ErrHandle(err)
-	md5_ := md5.New()
-	_, err = io.Copy(md5_, file)
-	Wigets.ErrHandle(err)
-	md5String := hex.EncodeToString(md5_.Sum(nil))
-	return md5String
-}
-
 func FileMD5FileDescriptor(file *os.File) string {
 	md5_ := md5.New()
 	_, err := io.Copy(md5_, file)
 	Wigets.ErrHandle(err)
 	md5String := hex.EncodeToString(md5_.Sum(nil))
 	return md5String
+}
+
+func ChapAuth(connection net.Conn) bool {
+	key := 12345
+	_ = connection.SetDeadline(time.Now().Add(time.Second * 3))
+	n := rand.Intn(10) + 2
+	r := rand.New(rand.NewSource(time.Now().Unix()))
+	nums := []uint32(nil)
+	var res uint32 = 0
+	for i := 1; i <= n; i++ {
+		oneNum := r.Uint32()
+		nums = append(nums, oneNum)
+		res += oneNum
+		r = rand.New(rand.NewSource(time.Now().Unix() + r.Int63()))
+	}
+	res ^= uint32(key)
+	authAskJson := ORM.ChapAuthToClient{
+		HowMany: res,
+		Nums:    nums,
+	}
+	authAskByte, err := json.Marshal(authAskJson)
+	Wigets.ErrHandle(err)
+	_, err = connection.Write(authAskByte)
+	Wigets.ErrHandle(err)
+	recvBuf := make([]byte, 4096)
+	_, err = connection.Read(recvBuf)
+	clientResultJson := new(ORM.AuthRecvResponse)
+	err = json.Unmarshal(recvBuf, clientResultJson)
+	Wigets.ErrHandle(err)
+	responseJson := ORM.WrongSession{}
+	if clientResultJson.Res == res {
+		responseJson.Info = "ok"
+		responseByte, err := json.Marshal(responseJson)
+		Wigets.ErrHandle(err)
+		_, _ = connection.Write(responseByte)
+		return true
+	} else {
+		responseJson.Info = "wrong"
+		responseByte, err := json.Marshal(responseJson)
+		Wigets.ErrHandle(err)
+		_, _ = connection.Write(responseByte)
+		_ = connection.Close()
+		return false
+	}
+
 }

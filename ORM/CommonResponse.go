@@ -27,3 +27,7 @@ type SendFileResponse struct {
 	Plain       string `json:"plain"`
 	Content     []byte `json:"content"`
 }
+
+type AuthRecvResponse struct {
+	Res uint32 `json:"res"`
+}

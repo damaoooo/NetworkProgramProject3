@@ -14,6 +14,9 @@ import (
 )
 
 func Dispatcher(connect net.Conn) {
+	if !Utils.ChapAuth(connect) {
+		return
+	}
 	buf := make([]byte, 4096)
 OUT:
 	for {
