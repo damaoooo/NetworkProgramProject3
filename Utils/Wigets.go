@@ -18,8 +18,9 @@ var FileFolder = "./"
 
 var ConnectionMap = make(map[string]net.Conn)
 var MessageQueue = InitQueue()
+var sessionMaps = make(map[string]Session)
 var SessionM = SessionManager{
-	Sessions: map[string]Session(nil),
+	Sessions: sessionMaps,
 	Lock:     sync.Mutex{},
 	Err:      SessionError{},
 }
@@ -79,7 +80,6 @@ func FileMD5FileDescriptor(file *os.File) string {
 
 func ChapAuth(connection net.Conn) bool {
 	key := 12345
-	_ = connection.SetDeadline(time.Now().Add(time.Second * 3))
 	n := rand.Intn(10) + 2
 	r := rand.New(rand.NewSource(time.Now().Unix()))
 	nums := []uint32(nil)
@@ -87,12 +87,13 @@ func ChapAuth(connection net.Conn) bool {
 	for i := 1; i <= n; i++ {
 		oneNum := r.Uint32()
 		nums = append(nums, oneNum)
-		res += oneNum
+		res += oneNum & 0xffffffff
+		res &= 0xffffffff
 		r = rand.New(rand.NewSource(time.Now().Unix() + r.Int63()))
 	}
 	res ^= uint32(key)
 	authAskJson := ORM.ChapAuthToClient{
-		HowMany: res,
+		HowMany: uint32(n),
 		Nums:    nums,
 	}
 	authAskByte, err := json.Marshal(authAskJson)
@@ -100,9 +101,10 @@ func ChapAuth(connection net.Conn) bool {
 	_, err = connection.Write(authAskByte)
 	Wigets.ErrHandle(err)
 	recvBuf := make([]byte, 4096)
-	_, err = connection.Read(recvBuf)
+	cnt, err := connection.Read(recvBuf)
+	recvBuf = recvBuf[:cnt]
 	clientResultJson := new(ORM.AuthRecvResponse)
-	err = json.Unmarshal(recvBuf, clientResultJson)
+	err = json.Unmarshal(recvBuf, clientResultJson) //TODO: 给所有的read的反序列化操作加上切片
 	Wigets.ErrHandle(err)
 	responseJson := ORM.WrongSession{}
 	if clientResultJson.Res == res {
@@ -119,5 +121,4 @@ func ChapAuth(connection net.Conn) bool {
 		_ = connection.Close()
 		return false
 	}
-
 }

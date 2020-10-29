@@ -19,6 +19,7 @@ func SendFileMeta(connection net.Conn, file *os.File, req ORM.MessageBlock) {
 	}
 	for {
 		cnt, err := file.Read(buf)
+		buf = buf[:cnt]
 		if err != nil && err != io.EOF {
 			resp.Plain = "server error"
 			respByte, err := json.Marshal(resp)
