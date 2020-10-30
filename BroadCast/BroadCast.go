@@ -11,8 +11,7 @@ import (
 func BroadCast(userName string, info []byte) {
 	for username, conn := range Utils.ConnectionMap {
 		if username != userName {
-			_, err := conn.Write(info)
-			Wigets.ErrHandle(err)
+			Wigets.SendBuf(conn, info)
 		}
 	}
 }

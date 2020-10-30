@@ -31,6 +31,5 @@ func GetMembers(connection net.Conn, requestJson ORM.MessageBlock) {
 	}
 	ret, err := json.Marshal(retJson)
 	Wigets.ErrHandle(err)
-	_, err = connection.Write(ret)
-	Wigets.ErrHandle(err)
+	Wigets.SendBuf(connection, ret)
 }

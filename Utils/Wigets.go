@@ -63,8 +63,7 @@ func SessionValidate(req ORM.MessageBlock, conn net.Conn) bool {
 			failedJson := ORM.WrongSession{Info: "Go Away!"}
 			failedByte, err := json.Marshal(failedJson)
 			Wigets.ErrHandle(err)
-			_, err = conn.Write(failedByte)
-			Wigets.ErrHandle(err)
+			Wigets.SendBuf(conn, failedByte)
 			return false
 		}
 	}
@@ -78,7 +77,7 @@ func FileMD5FileDescriptor(file *os.File) string {
 	return md5String
 }
 
-func ChapAuth(connection net.Conn) bool {
+func ChapAuth(connection net.Conn) bool { //TODO: Key 可变
 	key := 12345
 	n := rand.Intn(10) + 2
 	r := rand.New(rand.NewSource(time.Now().Unix()))
@@ -98,8 +97,7 @@ func ChapAuth(connection net.Conn) bool {
 	}
 	authAskByte, err := json.Marshal(authAskJson)
 	Wigets.ErrHandle(err)
-	_, err = connection.Write(authAskByte)
-	Wigets.ErrHandle(err)
+	Wigets.SendBuf(connection, authAskByte)
 	recvBuf := make([]byte, 4096)
 	cnt, err := connection.Read(recvBuf)
 	recvBuf = recvBuf[:cnt]
@@ -111,13 +109,13 @@ func ChapAuth(connection net.Conn) bool {
 		responseJson.Info = "ok"
 		responseByte, err := json.Marshal(responseJson)
 		Wigets.ErrHandle(err)
-		_, _ = connection.Write(responseByte)
+		Wigets.SendBuf(connection, responseByte)
 		return true
 	} else {
 		responseJson.Info = "wrong"
 		responseByte, err := json.Marshal(responseJson)
 		Wigets.ErrHandle(err)
-		_, _ = connection.Write(responseByte)
+		Wigets.SendBuf(connection, responseByte)
 		_ = connection.Close()
 		return false
 	}

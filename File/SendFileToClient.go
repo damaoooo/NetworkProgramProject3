@@ -24,16 +24,14 @@ func SendFileMeta(connection net.Conn, file *os.File, req ORM.MessageBlock) {
 			resp.Plain = "server error"
 			respByte, err := json.Marshal(resp)
 			Wigets.ErrHandle(err)
-			_, err = connection.Write(respByte)
-			Wigets.ErrHandle(err)
+			Wigets.SendBuf(connection, respByte)
 			break
 
 		} else if cnt == 0 {
 			resp.Plain = "finish"
 			respByte, err := json.Marshal(resp)
 			Wigets.ErrHandle(err)
-			_, err = connection.Write(respByte)
-			Wigets.ErrHandle(err)
+			Wigets.SendBuf(connection, respByte)
 			break
 
 		} else {
@@ -41,8 +39,7 @@ func SendFileMeta(connection net.Conn, file *os.File, req ORM.MessageBlock) {
 			resp.Content = buf[:cnt]
 			respByte, err := json.Marshal(resp)
 			Wigets.ErrHandle(err)
-			_, err = connection.Write(respByte)
-			Wigets.ErrHandle(err)
+			Wigets.SendBuf(connection, respByte)
 		}
 
 	}

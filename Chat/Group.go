@@ -3,8 +3,8 @@ package Chat
 import (
 	"NPProj3/ORM"
 	"NPProj3/Utils"
+	"NPProj3/Wigets"
 	"encoding/json"
-	"myTest/Unit"
 	"net"
 )
 
@@ -15,7 +15,6 @@ func GroupChat(connect net.Conn, request ORM.MessageBlock) {
 		Uuid:   request.Uuid,
 	}
 	ret, err := json.Marshal(retJson)
-	Unit.ErrHandle(err)
-	_, err = connect.Write(ret)
-	Unit.ErrHandle(err)
+	Wigets.ErrHandle(err)
+	Wigets.SendBuf(connect, ret)
 }

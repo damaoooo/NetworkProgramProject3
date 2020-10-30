@@ -21,8 +21,7 @@ func RecvFileMeta(connection net.Conn, req ORM.MessageBlock) {
 			}
 			respRet, err := json.Marshal(respJson)
 			Wigets.ErrHandle(err)
-			_, err = connection.Write(respRet)
-			Wigets.ErrHandle(err)
+			Wigets.SendBuf(connection, respRet)
 		}
 	case "finish":
 		err := Utils.FileManager.Finish(req.Uuid)
@@ -38,7 +37,6 @@ func RecvFileMeta(connection net.Conn, req ORM.MessageBlock) {
 		}
 		respRet, err := json.Marshal(respJson)
 		Wigets.ErrHandle(err)
-		_, err = connection.Write(respRet)
-		Wigets.ErrHandle(err)
+		Wigets.SendBuf(connection, respRet)
 	}
 }

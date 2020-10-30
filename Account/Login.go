@@ -28,8 +28,7 @@ func Login(connection net.Conn, request ORM.MessageBlock) {
 	}
 	ret, err := json.Marshal(retJson)
 	Wigets.ErrHandle(err)
-	_, err = connection.Write(ret)
-	Wigets.ErrHandle(err)
+	Wigets.SendBuf(connection, ret)
 }
 
 func Logout(connection net.Conn, request ORM.MessageBlock) {
@@ -56,8 +55,7 @@ func Logout(connection net.Conn, request ORM.MessageBlock) {
 
 	ret, err := json.Marshal(retJson)
 	Wigets.ErrHandle(err)
-	_, err = connection.Write(ret)
-	Wigets.ErrHandle(err)
+	Wigets.SendBuf(connection, ret)
 }
 
 func InterruptQuit(conn net.Conn) {

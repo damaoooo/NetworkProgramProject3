@@ -3,8 +3,8 @@ package File
 import (
 	"NPProj3/ORM"
 	"NPProj3/Utils"
+	"NPProj3/Wigets"
 	"encoding/json"
-	"myTest/Unit"
 	"net"
 )
 
@@ -27,7 +27,6 @@ func GroupFileList(connection net.Conn, req ORM.MessageBlock) {
 		GroupFileList: fileList,
 	}
 	retByte, err := json.Marshal(retJson)
-	Unit.ErrHandle(err)
-	_, err = connection.Write(retByte)
-	Unit.ErrHandle(err)
+	Wigets.ErrHandle(err)
+	Wigets.SendBuf(connection, retByte)
 }

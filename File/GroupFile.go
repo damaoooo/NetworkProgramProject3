@@ -28,8 +28,7 @@ func GroupFileUpload(connection net.Conn, req ORM.MessageBlock) {
 	}
 	ret, err := json.Marshal(retJson)
 	Wigets.ErrHandle(err)
-	_, err = connection.Write(ret)
-	Wigets.ErrHandle(err)
+	Wigets.SendBuf(connection, ret)
 }
 
 func GroupFileDownload(connection net.Conn, req ORM.MessageBlock) {
@@ -43,8 +42,7 @@ func GroupFileDownload(connection net.Conn, req ORM.MessageBlock) {
 		}
 		respByte, err := json.Marshal(respJson)
 		Wigets.ErrHandle(err)
-		_, err = connection.Write(respByte)
-		Wigets.ErrHandle(err)
+		Wigets.SendBuf(connection, respByte)
 	}
 }
 

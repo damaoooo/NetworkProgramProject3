@@ -20,8 +20,7 @@ func PersonalFile(connection net.Conn, req ORM.MessageBlock) {
 			}
 			respByte, err := json.Marshal(respJson)
 			Wigets.ErrHandle(err)
-			_, err = connection.Write(respByte)
-			Wigets.ErrHandle(err)
+			Wigets.SendBuf(connection, respByte)
 			targetResp := ORM.FileSendToClient{
 				MessageType: "personal_file",
 				From:        sendTo,
@@ -31,8 +30,7 @@ func PersonalFile(connection net.Conn, req ORM.MessageBlock) {
 
 			targetByte, err := json.Marshal(targetResp)
 			Wigets.ErrHandle(err)
-			_, err = target.Write(targetByte)
-			Wigets.ErrHandle(err)
+			Wigets.SendBuf(connection, targetByte)
 
 			SendFileMeta(connection, file.FileDescriptor, req)
 		} else {
@@ -42,8 +40,7 @@ func PersonalFile(connection net.Conn, req ORM.MessageBlock) {
 			}
 			respByte, err := json.Marshal(respJson)
 			Wigets.ErrHandle(err)
-			_, err = connection.Write(respByte)
-			Wigets.ErrHandle(err)
+			Wigets.SendBuf(connection, respByte)
 		}
 	} else {
 		respJson := ORM.CommonResponse{
@@ -52,7 +49,6 @@ func PersonalFile(connection net.Conn, req ORM.MessageBlock) {
 		}
 		respByte, err := json.Marshal(respJson)
 		Wigets.ErrHandle(err)
-		_, err = connection.Write(respByte)
-		Wigets.ErrHandle(err)
+		Wigets.SendBuf(connection, respByte)
 	}
 }

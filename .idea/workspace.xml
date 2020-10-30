@@ -24,10 +24,17 @@
   <component name="ChangeListManager">
     <list default="true" id="4e50f175-bd03-488f-8646-616e9b0c72cb" name="Default Changelist" comment="FinishAndWaitingForTest">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Account/Login.go" beforeDir="false" afterPath="$PROJECT_DIR$/Account/Login.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Account/Member.go" beforeDir="false" afterPath="$PROJECT_DIR$/Account/Member.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BroadCast/BroadCast.go" beforeDir="false" afterPath="$PROJECT_DIR$/BroadCast/BroadCast.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chat/Group.go" beforeDir="false" afterPath="$PROJECT_DIR$/Chat/Group.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chat/Personal.go" beforeDir="false" afterPath="$PROJECT_DIR$/Chat/Personal.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/File/GroupFile.go" beforeDir="false" afterPath="$PROJECT_DIR$/File/GroupFile.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/File/GroupFileList.go" beforeDir="false" afterPath="$PROJECT_DIR$/File/GroupFileList.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/File/PersonalFile.go" beforeDir="false" afterPath="$PROJECT_DIR$/File/PersonalFile.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/File/RecvFileFromClient.go" beforeDir="false" afterPath="$PROJECT_DIR$/File/RecvFileFromClient.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/File/SendFileToClient.go" beforeDir="false" afterPath="$PROJECT_DIR$/File/SendFileToClient.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Utils/Wigets.go" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/Wigets.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Wigets/Wigets.go" beforeDir="false" afterPath="$PROJECT_DIR$/Wigets/PureWigets.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,9 +48,16 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" path="C:\Go" />
+  <component name="GOROOT" path="C:\Users\damaoooo\go\go1.15.1" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GoLibraries">
+    <option name="urls">
+      <list>
+        <option value="file://$PROJECT_DIR$/../.." />
+      </list>
+    </option>
   </component>
   <component name="ProjectId" id="1iuji61xYgSnDP1nA6xqGTla5fX" />
   <component name="ProjectLevelVcsManager">
@@ -59,7 +73,11 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="configurable.Global.GOPATH.is.expanded" value="true" />
+    <property name="configurable.Module.GOPATH.is.expanded" value="false" />
+    <property name="configurable.Project.GOPATH.is.expanded" value="true" />
     <property name="go.import.settings.migrated" value="true" />
+    <property name="go.sdk.automatically.set" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -67,7 +85,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="settings.editor.selected.configurable" value="com.goide.configuration.GoLibrariesConfigurableProvider" />
   </component>
   <component name="RecentsManager">
     <key name="GoMoveDeclarationDialog.RECENT_KEY">
@@ -117,10 +135,18 @@
     <option name="LAST_COMMIT_MESSAGE" value="FinishAndWaitingForTest" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="365" y="171" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1603988137874">
+      <screen x="0" y="0" width="1368" height="872" />
+    </state>
+    <state x="365" y="171" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1368.872@0.0.1368.872" timestamp="1603988137874" />
     <state width="555" height="507" key="DebuggerActiveHint" timestamp="1603186683640">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="555" height="507" key="DebuggerActiveHint/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603186683640" />
+    <state x="400" y="220" key="FileChooserDialogImpl" timestamp="1604017244821">
+      <screen x="0" y="0" width="1368" height="872" />
+    </state>
+    <state x="400" y="220" key="FileChooserDialogImpl/0.0.1368.872@0.0.1368.872" timestamp="1604017244821" />
     <state width="1877" height="309" key="GridCell.Tab.0.bottom" timestamp="1603943275255">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -173,9 +199,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="184" y="85" key="MergeDialog/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603336458710" />
-    <state x="764" y="135" key="SettingsEditor" timestamp="1603336838366">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="120" y="109" key="SettingsEditor" timestamp="1604017250500">
+      <screen x="0" y="0" width="1368" height="872" />
     </state>
+    <state x="120" y="109" key="SettingsEditor/0.0.1368.872@0.0.1368.872" timestamp="1604017250500" />
     <state x="490" y="116" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1603261748495" />
     <state x="764" y="135" key="SettingsEditor/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603336838366" />
     <state x="552" y="1332" key="Vcs.Push.Dialog.v2" timestamp="1603806904285">
@@ -206,9 +233,10 @@
       <screen x="0" y="1080" width="1920" height="1040" />
     </state>
     <state x="0" y="1100" width="1563" height="790" maximized="true" key="dock-window-2/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603186308097" />
-    <state x="662" y="118" width="596" height="804" key="find.popup" timestamp="1603942945932">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="472" y="99" width="564" height="675" key="find.popup" timestamp="1604017895453">
+      <screen x="0" y="0" width="1368" height="872" />
     </state>
+    <state x="472" y="99" width="564" height="675" key="find.popup/0.0.1368.872@0.0.1368.872" timestamp="1604017895453" />
     <state x="662" y="118" width="596" height="804" key="find.popup/0.1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1603942945932" />
     <state x="662" y="1198" width="596" height="804" key="find.popup/0.1080.1920.1040/0.0.1920.1040@0.1080.1920.1040" timestamp="1603809923657" />
     <state x="623" y="1305" width="672" height="678" key="search.everywhere.popup" timestamp="1603809797754">
