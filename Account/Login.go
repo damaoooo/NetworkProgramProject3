@@ -16,7 +16,7 @@ func Login(connection net.Conn, request ORM.MessageBlock) {
 	if _, ok := Utils.ConnectionMap[username]; ok {
 		retJson.Result = "multi-username"
 	} else {
-		retJson.Result = "Success"
+		retJson.Result = "success"
 		Utils.ConnectionMap[username] = connection
 		event := ORM.Event{
 			Type: "online",

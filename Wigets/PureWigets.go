@@ -79,9 +79,9 @@ func RecvBuf(conn net.Conn, ch chan []byte, control chan int) {
 //fill为5加在前面发送
 func SendBuf(conn net.Conn, buf []byte) {
 	bufLength := 0
-	for index, key := range buf {
-		if key != 0 {
-			bufLength = index
+	for _, value := range buf {
+		if value != 0 {
+			bufLength++
 		}
 	}
 	sBufLength := fmt.Sprintf("%05d", bufLength)

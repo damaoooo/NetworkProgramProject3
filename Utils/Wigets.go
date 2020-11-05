@@ -97,7 +97,8 @@ func ChapAuth(connection net.Conn) bool { //TODO: Key 可变
 	}
 	authAskByte, err := json.Marshal(authAskJson)
 	Wigets.ErrHandle(err)
-	Wigets.SendBuf(connection, authAskByte)
+	_, err = connection.Write(authAskByte)
+	Wigets.ErrHandle(err)
 	recvBuf := make([]byte, 4096)
 	cnt, err := connection.Read(recvBuf)
 	recvBuf = recvBuf[:cnt]
@@ -109,13 +110,15 @@ func ChapAuth(connection net.Conn) bool { //TODO: Key 可变
 		responseJson.Info = "ok"
 		responseByte, err := json.Marshal(responseJson)
 		Wigets.ErrHandle(err)
-		Wigets.SendBuf(connection, responseByte)
+		_, err = connection.Write(responseByte)
+		Wigets.ErrHandle(err)
 		return true
 	} else {
 		responseJson.Info = "wrong"
 		responseByte, err := json.Marshal(responseJson)
 		Wigets.ErrHandle(err)
-		Wigets.SendBuf(connection, responseByte)
+		_, err = connection.Write(responseByte)
+		Wigets.ErrHandle(err)
 		_ = connection.Close()
 		return false
 	}
