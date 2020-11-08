@@ -8,43 +8,81 @@ import (
 	"net"
 )
 
-// 接收请求 ——> 回复ACK, 找到conn, --> 另一边变成接收模式 --> 发送文件
-func PersonalFile(connection net.Conn, req ORM.MessageBlock) {
+// 接收消息 --> 转发给客户端等待客户端的yes/no --> yes就开始转发文件块/no就下一个消息
+func PersonalFileAsk(connection net.Conn, req ORM.MessageBlock) {
 	sendTo := req.SendTo
+	waitForConfirmJson := ORM.FileSendToClient{
+		MessageType: "personal_file_ask",
+		From:        req.Username,
+		Uuid:        req.Uuid,
+		FileInfo:    req.FileInfo,
+	}
 	if target := Utils.FindConnByUsername(sendTo); target != nil {
-		file := Utils.FileManager.FindFileItemByMD5(req.FileInfo.MD5)
-		if file != nil {
-			respJson := ORM.CommonResponse{
-				Result: "success",
-				Uuid:   req.Uuid,
-			}
-			respByte, err := json.Marshal(respJson)
-			Wigets.ErrHandle(err)
-			Wigets.SendBuf(connection, respByte)
-			targetResp := ORM.FileSendToClient{
-				MessageType: "personal_file",
-				From:        sendTo,
-				Uuid:        req.Uuid,
-				FileInfo:    req.FileInfo,
-			}
+		respByte, err := json.Marshal(waitForConfirmJson)
+		Wigets.ErrHandle(err)
+		Wigets.SendBuf(target, respByte)
 
-			targetByte, err := json.Marshal(targetResp)
-			Wigets.ErrHandle(err)
-			Wigets.SendBuf(connection, targetByte)
-
-			SendFileMeta(connection, file.FileDescriptor, req)
-		} else {
-			respJson := ORM.CommonResponse{
-				Result: "No Such File",
-				Uuid:   req.Uuid,
-			}
-			respByte, err := json.Marshal(respJson)
-			Wigets.ErrHandle(err)
-			Wigets.SendBuf(connection, respByte)
-		}
 	} else {
 		respJson := ORM.CommonResponse{
 			Result: "No Such User",
+			Uuid:   req.Uuid,
+		}
+		respByte, err := json.Marshal(respJson)
+		Wigets.ErrHandle(err)
+		Wigets.SendBuf(connection, respByte)
+	}
+}
+
+func PersonalFileAskResponse(connection net.Conn, req ORM.MessageBlock) {
+	confirmJson := ORM.MessageBlock{
+		MessageType: req.MessageType,
+		Uuid:        req.Uuid,
+		Plain:       req.Plain,
+		SendTo:      req.SendTo,
+	}
+	respByte, err := json.Marshal(confirmJson)
+	Wigets.ErrHandle(err)
+	if target := Utils.FindConnByUsername(req.SendTo); target != nil {
+		Wigets.SendBuf(target, respByte)
+	} else {
+		respJson := ORM.CommonResponse{
+			Result: "No Such User",
+			Uuid:   req.Uuid,
+		}
+		respByte, err := json.Marshal(respJson)
+		Wigets.ErrHandle(err)
+		Wigets.SendBuf(connection, respByte)
+	}
+}
+
+func PersonalFileBlockTransfer(connection net.Conn, req ORM.MessageBlock) {
+	sendTo := req.SendTo
+	if target := Utils.FindConnByUsername(sendTo); target != nil {
+		req.Session = ""
+		responseByte, err := json.Marshal(req)
+		Wigets.ErrHandle(err)
+		Wigets.SendBuf(target, responseByte)
+	} else {
+		respJson := ORM.CommonResponse{
+			Result: "No Such user",
+			Uuid:   req.Uuid,
+		}
+		respByte, err := json.Marshal(respJson)
+		Wigets.ErrHandle(err)
+		Wigets.SendBuf(connection, respByte)
+	}
+}
+
+func PersonalAckTransfer(connection net.Conn, req ORM.MessageBlock) {
+	sendTo := req.SendTo
+	if target := Utils.FindConnByUsername(sendTo); target != nil {
+		req.Session = ""
+		responseByte, err := json.Marshal(req)
+		Wigets.ErrHandle(err)
+		Wigets.SendBuf(target, responseByte)
+	} else {
+		respJson := ORM.CommonResponse{
+			Result: "No Such user",
 			Uuid:   req.Uuid,
 		}
 		respByte, err := json.Marshal(respJson)

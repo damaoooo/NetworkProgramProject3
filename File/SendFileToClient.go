@@ -3,6 +3,7 @@ package File
 import (
 	"NPProj3/ORM"
 	"NPProj3/Wigets"
+	"encoding/base64"
 	"encoding/json"
 	"io"
 	"net"
@@ -10,6 +11,7 @@ import (
 )
 
 func SendFileMeta(connection net.Conn, file *os.File, req ORM.MessageBlock) {
+	// TODO: 加上base64 检查获取文件目录
 	buf := make([]byte, 1024)
 	resp := ORM.SendFileResponse{
 		Uuid:        req.Uuid,
@@ -36,7 +38,7 @@ func SendFileMeta(connection net.Conn, file *os.File, req ORM.MessageBlock) {
 
 		} else {
 			resp.Plain = "continue"
-			resp.Content = buf[:cnt]
+			resp.Content = base64.StdEncoding.EncodeToString(buf[:cnt])
 			respByte, err := json.Marshal(resp)
 			Wigets.ErrHandle(err)
 			Wigets.SendBuf(connection, respByte)

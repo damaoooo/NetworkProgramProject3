@@ -103,7 +103,7 @@ func ChapAuth(connection net.Conn) bool { //TODO: Key 可变
 	cnt, err := connection.Read(recvBuf)
 	recvBuf = recvBuf[:cnt]
 	clientResultJson := new(ORM.AuthRecvResponse)
-	err = json.Unmarshal(recvBuf, clientResultJson) //TODO: 给所有的read的反序列化操作加上切片
+	err = json.Unmarshal(recvBuf, clientResultJson)
 	Wigets.ErrHandle(err)
 	responseJson := ORM.WrongSession{}
 	if clientResultJson.Res == res {

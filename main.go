@@ -24,8 +24,8 @@ OUT:
 		select {
 		case buf := <-recv:
 			messageType, recvJson := Utils.UnSerialize(buf)
-			if !Utils.SessionValidate(*recvJson, connect) {
-				continue
+			if messageType != "ack" && !Utils.SessionValidate(*recvJson, connect) {
+				continue OUT
 			}
 			switch messageType {
 			case "login":
@@ -46,15 +46,22 @@ OUT:
 				File.RecvFileMeta(connect, *recvJson)
 			case "download_group_file":
 				File.GroupFileDownload(connect, *recvJson)
-			case "person_file":
-				File.PersonalFile(connect, *recvJson)
-
+			case "personal_file_ask":
+				go File.PersonalFileAsk(connect, *recvJson)
+			case "personal_file_answer":
+				go File.PersonalFileAskResponse(connect, *recvJson)
+			case "personal_file_transfer":
+				File.PersonalFileBlockTransfer(connect, *recvJson)
+			case "file_transfer_ack":
+				File.PersonalAckTransfer(connect, *recvJson)
 			case "ack":
 				continue OUT
 			}
 		case status := <-control:
 			if status == -1 {
 				Account.InterruptQuit(connect)
+				break OUT
+			} else if status == 0 {
 				break OUT
 			}
 		}

@@ -9,7 +9,7 @@ type MessageBlock struct {
 	FileInfo    FileInfo `json:"file_info"`
 	Event       Event    `json:"event"`
 	Session     string   `json:"session"`
-	Content     []byte   `json:"content"`
+	Content     string   `json:"content"`
 }
 
 type FileInfo struct {

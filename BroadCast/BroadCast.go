@@ -26,10 +26,12 @@ func EventBroadcast() {
 				MessageType: "",
 				Event:       *event,
 			}
-			if msgType == "group" {
+			if msgType == "group_message" {
 				retJson.MessageType = "group_message"
 			} else if msgType == "online" || msgType == "offline" {
 				retJson.MessageType = "event"
+			} else if msgType == "group_file_add" || msgType == "group_file_removed" {
+				retJson.MessageType = "group_file_changed"
 			}
 			ret, err := json.Marshal(retJson)
 			Wigets.ErrHandle(err)

@@ -5,6 +5,7 @@ import (
 	"NPProj3/Utils"
 	"NPProj3/Wigets"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net"
 )
@@ -49,6 +50,7 @@ func Logout(connection net.Conn, request ORM.MessageBlock) {
 		if err != nil {
 			log.Fatal(err)
 		}
+		fmt.Printf("[-] Client %v logoff  \n", connection.RemoteAddr())
 	} else {
 		retJson.Result = "no-user"
 	}

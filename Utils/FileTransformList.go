@@ -126,6 +126,8 @@ func (f *FileList) Finish(uuid string) error {
 			md5Value := FileMD5FileDescriptor(file.FileDescriptor)
 			if md5Value == file.FileInfo.MD5 {
 				file.State = FileState.Finish
+				err := file.FileDescriptor.Close()
+				Wigets.ErrHandle(err)
 				return nil
 			} else {
 				file.State = FileState.Wrong

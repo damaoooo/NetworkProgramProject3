@@ -29,7 +29,7 @@ func RecvBuf(conn net.Conn, ch chan []byte, control chan int) {
 		switch err {
 		case io.EOF:
 			fmt.Printf("[-] Client %v disconnected \n", conn.RemoteAddr())
-			control <- -1
+			control <- 0
 			return
 		case nil:
 			if packageLen == -1 {
@@ -74,8 +74,6 @@ func RecvBuf(conn net.Conn, ch chan []byte, control chan int) {
 	}
 }
 
-//TODO: 获取buf长度，然后zero
-//
 //fill为5加在前面发送
 func SendBuf(conn net.Conn, buf []byte) {
 	bufLength := 0
