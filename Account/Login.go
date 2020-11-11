@@ -13,10 +13,11 @@ import (
 func Login(connection net.Conn, request ORM.MessageBlock) {
 	username := request.Username
 	uuid := request.Uuid
+	password := request.Plain
 	retJson := ORM.LoginResponse{Uuid: uuid}
 	if _, ok := Utils.ConnectionMap[username]; ok {
 		retJson.Result = "multi-username"
-	} else {
+	} else if Utils.UserPassManager.Check(username, password) {
 		retJson.Result = "success"
 		Utils.ConnectionMap[username] = connection
 		event := ORM.Event{
@@ -26,6 +27,8 @@ func Login(connection net.Conn, request ORM.MessageBlock) {
 		}
 		Utils.MessageQueue.Add(event)
 		retJson.Session = Utils.SessionM.GenerateNew(username)
+	} else {
+		retJson.Result = "wrong-user"
 	}
 	ret, err := json.Marshal(retJson)
 	Wigets.ErrHandle(err)

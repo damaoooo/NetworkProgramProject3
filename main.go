@@ -9,25 +9,31 @@ import (
 	"NPProj3/Wigets"
 	"fmt"
 	"net"
+	"path/filepath"
 )
 
 func Dispatcher(connect net.Conn) {
 	if !Utils.ChapAuth(connect) {
 		return
 	}
-	recv := make(chan []byte)
+	recv := make(chan string, 0)
 	control := make(chan int)
 	go Wigets.RecvBuf(connect, recv, control)
 OUT:
 
 	for {
 		select {
-		case buf := <-recv:
+		case buf_ := <-recv:
+			buf := []byte(buf_)
 			messageType, recvJson := Utils.UnSerialize(buf)
-			if messageType != "ack" && !Utils.SessionValidate(*recvJson, connect) {
+			if messageType != "ack" &&
+				messageType != "sign_up" &&
+				!Utils.SessionValidate(*recvJson, connect) {
 				continue OUT
 			}
 			switch messageType {
+			case "sign_up":
+				Account.NewUserSignUp(connect, *recvJson)
 			case "login":
 				Account.Login(connect, *recvJson)
 			case "offline":
@@ -38,11 +44,11 @@ OUT:
 				Chat.GroupChat(connect, *recvJson)
 			case "person":
 				Chat.PersonalChat(connect, *recvJson)
-			case "group_file":
+			case "group_file_upload":
 				File.GroupFileUpload(connect, *recvJson)
 			case "group_file_list":
 				File.GroupFileList(connect, *recvJson)
-			case "file_send":
+			case "group_file_send":
 				File.RecvFileMeta(connect, *recvJson)
 			case "download_group_file":
 				File.GroupFileDownload(connect, *recvJson)
@@ -54,6 +60,8 @@ OUT:
 				File.PersonalFileBlockTransfer(connect, *recvJson)
 			case "file_transfer_ack":
 				File.PersonalAckTransfer(connect, *recvJson)
+			case "file_send_confirm":
+				File.GroupFileConfirm(*recvJson)
 			case "ack":
 				continue OUT
 			}
@@ -76,6 +84,8 @@ func main() {
 	}
 	fmt.Println("[+] Server start at port 5123")
 	go BroadCast.MessageListen()
+	filePath := filepath.Join(Utils.FileFolder, "./group")
+	go Utils.FileManager.InputFileByFolder(filePath)
 	fmt.Println("[+] Start Event Listening")
 	for {
 		conn, err := server.Accept()

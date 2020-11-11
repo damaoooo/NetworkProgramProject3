@@ -4,7 +4,10 @@ import (
 	"NPProj3/ORM"
 	"NPProj3/Wigets"
 	"errors"
+	uuid "github.com/satori/go.uuid"
 	"os"
+	"path/filepath"
+	"strconv"
 	"sync"
 )
 
@@ -46,13 +49,14 @@ func (f *FileItem) WriteIn(data []byte) error {
 	return err
 }
 
-func (f *FileList) AddFile(uuid string, fileDescriptor *os.File, fileInfo ORM.FileInfo) error {
+func (f *FileList) AddFile(uuid string, fileDescriptor *os.File, fileInfo ORM.FileInfo, path string) error {
 	fileItem := FileItem{
 		Uuid:           uuid,
 		FileInfo:       fileInfo,
 		FileDescriptor: fileDescriptor,
 		Offset:         int64(0),
 		State:          FileState.Wait,
+		Path:           path,
 	}
 	f.Lock.Lock()
 	defer f.Lock.Unlock()
@@ -64,6 +68,19 @@ func (f *FileList) AddFile(uuid string, fileDescriptor *os.File, fileInfo ORM.Fi
 		f.Length += 1
 		return nil
 	}
+}
+
+func (f *FileList) InitAddFile(fileInfo ORM.FileInfo, filepath string) {
+	fileItem := FileItem{
+		Uuid:           uuid.Must(uuid.NewV4()).String(),
+		FileDescriptor: nil,
+		FileInfo:       fileInfo,
+		Offset:         0,
+		State:          FileState.Finish,
+		Path:           filepath,
+	}
+	f.List = append(f.List, fileItem)
+	f.Length += 1
 }
 
 //this func haven't lock for duplicated lock operation
@@ -88,12 +105,17 @@ func (f *FileList) IsExist(md5 string) bool {
 	return true
 }
 
+func (f *FileList) ChangeFileStateByUUID(uuid string, state int) {
+	file := f.FindFileItemByUUID(uuid)
+	file.State = state
+}
+
 func (f *FileList) FindFileItemByUUID(uuid string) *FileItem {
 	f.Lock.Lock()
 	defer f.Lock.Unlock()
-	for _, file := range f.List {
+	for idx, file := range f.List {
 		if file.Uuid == uuid {
-			return &file
+			return &f.List[idx]
 		}
 	}
 	return nil
@@ -125,7 +147,7 @@ func (f *FileList) Finish(uuid string) error {
 		if file.Uuid == uuid {
 			md5Value := FileMD5FileDescriptor(file.FileDescriptor)
 			if md5Value == file.FileInfo.MD5 {
-				file.State = FileState.Finish
+				f.ChangeFileStateByUUID(uuid, FileState.Finish)
 				err := file.FileDescriptor.Close()
 				Wigets.ErrHandle(err)
 				return nil
@@ -143,6 +165,45 @@ func (f *FileList) FindFileItemByMD5(md5 string) *FileItem {
 	for _, file := range f.List {
 		if file.FileInfo.MD5 == md5 {
 			return &file
+		}
+	}
+	return nil
+}
+
+// You Should Input folder name with "./" so that it indicates it is a folder
+// instead of filename
+func (f *FileList) InputFileByFolder(folder string) {
+	filePath := filepath.Join(FileFolder, folder)
+	err := filepath.Walk(filePath, f.myWalkFunc)
+	Wigets.ErrHandle(err)
+
+}
+
+func (f *FileList) myWalkFunc(path string, info os.FileInfo, err error) error {
+	if err != nil {
+		Wigets.ErrHandle(err)
+	}
+	if !info.IsDir() {
+		fi, err := os.Stat(path)
+		if err != nil {
+			return err
+		}
+		fileInfo := ORM.FileInfo{
+			Name: "",
+			Size: "",
+			MD5:  "",
+		}
+		fileInfo.Name = fi.Name()
+		fileInfo.Size = strconv.FormatInt(fi.Size(), 10)
+		file, err := os.Open(path)
+		if err != nil {
+			return err
+		}
+		fileInfo.MD5 = FileMD5FileDescriptor(file)
+		f.InitAddFile(fileInfo, path)
+		err = file.Close()
+		if err != nil {
+			return err
 		}
 	}
 	return nil

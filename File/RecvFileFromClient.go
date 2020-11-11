@@ -44,7 +44,6 @@ func RecvFileMeta(connection net.Conn, req ORM.MessageBlock) {
 				Case: fileInfo.MD5 + "||" + fileInfo.Size,
 			}
 			Utils.MessageQueue.Add(fileChangeEvent)
-
 		}
 
 		respRet, err := json.Marshal(respJson)

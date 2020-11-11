@@ -18,6 +18,8 @@ var FileFolder = "./"
 
 var ConnectionMap = make(map[string]net.Conn)
 var MessageQueue = InitQueue()
+var FileChanManager = InitManager()
+var UserPassManager = InitUserManager()
 var sessionMaps = make(map[string]Session)
 var SessionM = SessionManager{
 	Sessions: sessionMaps,
@@ -122,4 +124,11 @@ func ChapAuth(connection net.Conn) bool { //TODO: Key 可变
 		_ = connection.Close()
 		return false
 	}
+}
+
+func GetStringMD5(s string) string {
+	md5Ctx := md5.New()
+	md5Ctx.Write([]byte(s))
+	cipherStr := md5Ctx.Sum(nil)
+	return hex.EncodeToString(cipherStr)
 }

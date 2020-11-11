@@ -35,8 +35,7 @@ func EventBroadcast() {
 			}
 			ret, err := json.Marshal(retJson)
 			Wigets.ErrHandle(err)
-			username := event.User
-			BroadCast(username, ret)
+			BroadCast("", ret)
 		}
 	}
 }

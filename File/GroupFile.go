@@ -18,9 +18,10 @@ func GroupFileUpload(connection net.Conn, req ORM.MessageBlock) {
 		err := os.Mkdir(groupFilePath, 0777)
 		Wigets.ErrHandle(err)
 	}
-	file, err := os.Create(filepath.Join(groupFilePath, fileInfo.Name))
+	thisFilePath := filepath.Join(groupFilePath, fileInfo.Name)
+	file, err := os.Create(thisFilePath)
 	Wigets.ErrHandle(err)
-	err = Utils.FileManager.AddFile(req.Uuid, file, fileInfo)
+	err = Utils.FileManager.AddFile(req.Uuid, file, fileInfo, thisFilePath)
 	Wigets.ErrHandle(err)
 	retJson := ORM.CommonResponse{
 		Result: "success",
@@ -33,17 +34,25 @@ func GroupFileUpload(connection net.Conn, req ORM.MessageBlock) {
 
 func GroupFileDownload(connection net.Conn, req ORM.MessageBlock) {
 	fileMD5 := strings.ToLower(req.FileInfo.MD5)
+	respJson := ORM.CommonResponse{
+		Result: "",
+		Uuid:   req.Uuid,
+	}
 	if fileHandle := Utils.FileManager.FindFileItemByMD5(fileMD5); fileHandle != nil {
-		go SendFileMeta(connection, fileHandle.FileDescriptor, req)
+		respJson.Result = "success"
+		respByte, err := json.Marshal(respJson)
+		Wigets.ErrHandle(err)
+		Wigets.SendBuf(connection, respByte)
+		ch := make(chan string)
+		Utils.FileChanManager.Add(ch, req.Uuid)
+		go SendFileMeta(connection, fileHandle.Path, req)
 	} else {
-		respJson := ORM.CommonResponse{
-			Result: "No Such File",
-			Uuid:   req.Uuid,
-		}
+		respJson.Result = "no_such_file"
 		respByte, err := json.Marshal(respJson)
 		Wigets.ErrHandle(err)
 		Wigets.SendBuf(connection, respByte)
 	}
+
 }
 
 func isExist(path string) bool {

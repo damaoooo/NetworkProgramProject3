@@ -18,13 +18,14 @@ func ErrHandle(e interface{}) {
 	}
 }
 
-func RecvBuf(conn net.Conn, ch chan []byte, control chan int) {
-	buf := make([]byte, 4096)
+func RecvBuf(conn net.Conn, ch chan string, control chan int) {
+	buf := make([]byte, 20480)
 	packageLen := -1
 	retStr := ""
 	for {
-		err := conn.SetReadDeadline(time.Now().Add(50 * time.Millisecond))
+		err := conn.SetReadDeadline(time.Now().Add(1 * time.Millisecond))
 		ErrHandle(err)
+
 		cnt, err := conn.Read(buf)
 		switch err {
 		case io.EOF:
@@ -32,25 +33,42 @@ func RecvBuf(conn net.Conn, ch chan []byte, control chan int) {
 			control <- 0
 			return
 		case nil:
-			if packageLen == -1 {
-				sPackageLength := string(buf[:5])
-				packageLen, err = strconv.Atoi(sPackageLength)
-				ErrHandle(err)
-				retStr += string(buf[5:cnt])
-			} else {
+			// 解决半包和粘包问题
+		RECV:
+			for {
+				if packageLen == -1 {
+					sPackageLength := string(buf[:5])
+					packageLen, err = strconv.Atoi(sPackageLength)
+					ErrHandle(err)
+					retStr += string(buf[5:cnt])
+				}
 				if len(retStr) == packageLen {
-					ch <- []byte(retStr)
+					ch <- retStr
 					retStr = ""
 					packageLen = -1
+					break
+				} else if len(retStr) > packageLen {
+					for len(retStr) > packageLen {
+						ch <- retStr[:packageLen]
+						retStr = retStr[packageLen:]
+						packageLen, err = strconv.Atoi(retStr[:5])
+						ErrHandle(err)
+						retStr = retStr[5:]
+						break RECV
+					}
 				} else if len(retStr) < packageLen {
-					packageLen += cnt
 					retStr += string(buf[:cnt])
+					if len(retStr) < packageLen {
+						break
+					} else {
+						continue
+					}
 				}
 			}
 		default:
 			if errors.Is(err, os.ErrDeadlineExceeded) {
 				if len(retStr) == packageLen {
-					ch <- []byte(retStr)
+					ch <- retStr
 					retStr = ""
 					packageLen = -1
 				}
