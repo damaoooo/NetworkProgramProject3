@@ -41,6 +41,10 @@ func RecvBuf(conn net.Conn, ch chan string, control chan int) {
 					packageLen, err = strconv.Atoi(sPackageLength)
 					ErrHandle(err)
 					retStr += string(buf[5:cnt])
+					// 如果发现粘包，继续收
+					if len(retStr) < packageLen {
+						break RECV
+					}
 				}
 				if len(retStr) == packageLen {
 					ch <- retStr
@@ -48,7 +52,7 @@ func RecvBuf(conn net.Conn, ch chan string, control chan int) {
 					packageLen = -1
 					break
 				} else if len(retStr) > packageLen {
-					// 如果粘包
+					// 如果还是粘包
 					for len(retStr) > packageLen {
 						ch <- retStr[:packageLen]
 						retStr = retStr[packageLen:]
@@ -58,11 +62,12 @@ func RecvBuf(conn net.Conn, ch chan string, control chan int) {
 					}
 					break RECV
 				} else if len(retStr) < packageLen {
+					// 如果半包
 					retStr += string(buf[:cnt])
 					if len(retStr) < packageLen {
-						break
+						break RECV
 					} else {
-						continue
+						continue RECV
 					}
 				}
 			}

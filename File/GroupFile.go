@@ -21,11 +21,15 @@ func GroupFileUpload(connection net.Conn, req ORM.MessageBlock) {
 	thisFilePath := filepath.Join(groupFilePath, fileInfo.Name)
 	file, err := os.Create(thisFilePath)
 	Wigets.ErrHandle(err)
-	err = Utils.FileManager.AddFile(req.Uuid, file, fileInfo, thisFilePath)
-	Wigets.ErrHandle(err)
 	retJson := ORM.CommonResponse{
 		Result: "success",
 		Uuid:   req.Uuid,
+	}
+	err = Utils.FileManager.AddFile(req.Uuid, file, fileInfo, thisFilePath)
+	if err != nil && err.Error() == "duplicate file" {
+		retJson.Result = "duplicate_file"
+	} else {
+		Wigets.ErrHandle(err)
 	}
 	ret, err := json.Marshal(retJson)
 	Wigets.ErrHandle(err)
