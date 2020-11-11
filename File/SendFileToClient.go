@@ -12,7 +12,6 @@ import (
 )
 
 func SendFileMeta(connection net.Conn, filePath string, req ORM.MessageBlock) {
-	// TODO: 改成停等协议
 	buf := make([]byte, 10240)
 	resp := ORM.SendFileResponse{
 		Uuid:        req.Uuid,
