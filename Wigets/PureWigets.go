@@ -19,7 +19,7 @@ func ErrHandle(e interface{}) {
 }
 
 func RecvBuf(conn net.Conn, ch chan string, control chan int) {
-	buf := make([]byte, 20480)
+	buf := make([]byte, 40960)
 	packageLen := -1
 	retStr := ""
 	for {
@@ -48,14 +48,15 @@ func RecvBuf(conn net.Conn, ch chan string, control chan int) {
 					packageLen = -1
 					break
 				} else if len(retStr) > packageLen {
+					// 如果粘包
 					for len(retStr) > packageLen {
 						ch <- retStr[:packageLen]
 						retStr = retStr[packageLen:]
 						packageLen, err = strconv.Atoi(retStr[:5])
 						ErrHandle(err)
 						retStr = retStr[5:]
-						break RECV
 					}
+					break RECV
 				} else if len(retStr) < packageLen {
 					retStr += string(buf[:cnt])
 					if len(retStr) < packageLen {
